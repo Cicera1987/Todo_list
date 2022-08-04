@@ -1,8 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { createServer} from "miragejs"
+import  'bootstrap/dist/css/bootstrap.css' ;
+
+
+createServer({
+    routes() {
+      this.namespace = "api"
+
+      //Responding to Post request
+          this.post('/movies', (schema, request) => {
+            let attrs = JSON.parse(request.requestBody)
+            attrs.id = Math.floor(Math.random() *100) 
+          
+              return {movie: attrs}
+          })
+
+          this.get('/taskList', () => {
+              return {
+                taskList:[
+                  {model:'', taskList:''}
+                ]
+              }
+          })
+  
+      this.get("/movies", () => {
+        return {
+          movies: [
+            { email: "ccica_25@hotmail.com", password: "123" },
+          ],
+        }
+      })
+    },
+  })
+  
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -10,8 +44,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

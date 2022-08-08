@@ -15,12 +15,7 @@ export const ContainerButton = styled.div`
     align-items: center;
     background-color: #f4f6f8;
 `
-export const ContainerBuscar = styled.div`
-    display: flex;
-    border: solid 1px grey;
-    border-radius: 12px;
 
-`
 export const ContainerLabel = styled.form`
     display: flex;
     flex-direction: row;

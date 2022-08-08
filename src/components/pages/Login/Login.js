@@ -8,12 +8,13 @@ const Login = () => {
 
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
-
 const [movies, setMovies] = useState(null)
+
+
   useEffect(() => {
     fetch('/api/movies')
       .then(res => res.json())
-      .then((json) => setMovies(json.movies))
+      .then((data) => setMovies(data))
       .catch(err => console.log(err))
   }, [])
 

@@ -7,7 +7,6 @@ export class Button extends Componet {
             <ButtonLogin>
             <button 
             type="submit" 
-            className="btn btn-dark"
             >
             {this.props.children}
             </button>

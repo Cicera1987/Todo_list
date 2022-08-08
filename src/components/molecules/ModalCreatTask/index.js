@@ -1,62 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { TitleTask } from './stayle';
+import { TitleTask, ContainerSelect } from './style';
 import { ContainerButton } from '../../pages/TodoList/style'
 import { Modal } from 'reactstrap';
+import { ButtonLogin } from '../../atoms/Buttons/ButtonLogin/style';
+import axios from 'axios'
+
+const http = axios.create({
+    baseURL: 'http:api'
+})
 
 const CreateTaskPopup = ({ modal, toggle, save }) => {
     const [taskName, setTaskName] = useState('');
     const [description, setDescription] = useState('');
-   
-   
-    // const [movies, setMovies] = useState(null)
-    // useEffect(() => {
-    //     fetch('/api/movies')
-    //         .then(res => res.json())
-    //         .then((json) => setMovies(json.movies))
-    //         .catch(err => console.log(err))
-    // }, [])
-
+    const [state, setState] = useState(1)
 
     const handleChange = (e) => {
-
         const { name, value } = e.target
 
-        if (name === "taskName") {
+        if (name === "taskName" ) {
             setTaskName(value)
+        }
+         else if (name === "state") {
+            setState(value)
+            
         } else {
             setDescription(value)
         }
 
     }
-
-    // const handleSave  = async (e) => {
-    //     e.preventDefoult()
-    //     try {
-    //         const res = await fetch('api/moveis', {
-    //             method: 'POST', body: JSON.stringify({
-    //                 taskName, description
-    //             })
-    //         })
-    //         const json = await res.json()
-    //         taskName('')
-    //         setDescription('')
-
-    //     } catch (error) {
-
-    //     }
-    // }
-
     const handleSave = (e) => {
         e.preventDefault()
         let taskObj = {}
         taskObj["Name"] = taskName
         taskObj["Description"] = description
+        taskObj["State"] = state
         save(taskObj)
-
     }
 
-
     return (
+        
         <Modal isOpen={modal} toggle={toggle}>
             <TitleTask toggle={toggle}>Criar lista</TitleTask>
             <form onSubmit={handleSave}>
@@ -66,9 +48,17 @@ const CreateTaskPopup = ({ modal, toggle, save }) => {
                         className="form-control"
                         value={taskName}
                         onChange={handleChange}
-                        // onChange={e => setTaskName(e.target.value)}
                         name="taskName" />
                 </div>
+
+            <ContainerSelect type="text" value={state} onChange={handleChange} name="state" >
+                <option value="Selecione o tipo">Selecione o tipo</option>
+                <option value="Pendente">Pendente</option>
+                <option value="Em Andamento">Em Andamento</option>
+                <option value="Em Análise">Em Análise</option>
+                <option value="Concluido">Concluido</option>
+            </ContainerSelect>
+
                 <div className="form-group">
                     <label>Decrição</label>
                     <textarea
@@ -81,11 +71,15 @@ const CreateTaskPopup = ({ modal, toggle, save }) => {
                 </div>
             </form>
             <ContainerButton>
-                <button className="btn btn-dark" onClick={handleSave}>Criar</button>{' '}
-                <button className="btn btn-dark" onClick={toggle}>Cancel</button>
+                <ButtonLogin onClick={handleSave}>Criar</ButtonLogin>{' '}
+                <ButtonLogin onClick={toggle}>Cancel</ButtonLogin>
             </ContainerButton>
         </Modal>
     );
 };
 
 export default CreateTaskPopup;
+
+
+
+

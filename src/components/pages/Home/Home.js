@@ -5,13 +5,11 @@ import { ButtonLogin } from '../../atoms/Buttons/ButtonLogin/style';
 
 const handleSubmit = async (e) => {
   e.preventDefault()
-  const iniciar = {
-   Home:"Iniciar"
 
-  }
-  console.log(iniciar)
-};
+}
+
 const Home = () => {
+
   return (
     <>
     <ContainerTitle >Organize sua lista de tarefas!</ContainerTitle >

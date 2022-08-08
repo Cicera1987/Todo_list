@@ -13,8 +13,10 @@ const TodoList = () => {
     const [taskList, setTaskList] = useState([])
     const [createPost, setCreatePost] = useState([])
     const [update, setUpdate] = useState(false)
+    const [del, setDel] = useState(false)
+    const [taskListFilter, setTaskListFiter] = useState([])
 
-    const [search, setSearch] = useState([])
+    const [search, setSearch] = useState("")
 
     useEffect(() => {
         fetch('/api/taskList/')
@@ -23,10 +25,16 @@ const TodoList = () => {
             .catch(err => console.log(err))
     }, [update])
 
+    // useEffect(() => {
+    //     if (search.length > 0 ) {
+    //         setTaskListFiter(taskList.filter(obj => obj.Name.includes(search)))
+    //     }
 
-    const FilteredTask = search.length > 0
-        ? taskList.filter(taskList.name.includes(search))
-        : [];
+    // }, [search])
+
+    //  const filteredTask = search.length > 0 ? taskList.filter(taskList.name === search) : [];
+    console.log(search)
+    console.log(taskList)
 
 
     const deleteTask = (index) => {
@@ -34,9 +42,18 @@ const TodoList = () => {
         tempList.splice(index, 1)
         localStorage.setItem("taskList", JSON.stringify(tempList))
         setTaskList(tempList)
-        window.location.reload()
+
+        fetch(`/api/delete/${index}`, {
+            method: 'DELETE',
+
+
+        })
+            .then((response) => response.json())
+            .then((json) => console.log(json));
+
+        setDel(!del)
     }
-console.log('Renderiza')
+
 
     const updateListArray = (obj, index) => {
         let tempList = taskList
@@ -55,7 +72,7 @@ console.log('Renderiza')
             .then((json) => console.log(json));
 
         setUpdate(!update)
-        
+
 
     }
 
@@ -71,19 +88,17 @@ console.log('Renderiza')
         setTaskList(taskList)
         setCreatePost(taskObj)
         setModal(false)
-    }
 
-    useEffect(() => {
         fetch('/api/create', {
             method: "POST",
-            body: JSON.stringify(createPost),
+            body: JSON.stringify(taskObj),
             headers: { "Content-type": "application/json; charset=UTF-8" }
         }).then(res => res.json())
             .then((data) => console.log(data))
             .catch(err => console.log(err))
 
 
-    }, [createPost])
+    }
 
 
     const handleSubmit = async (e) => {
@@ -95,7 +110,7 @@ console.log('Renderiza')
             <ContainerButton>
                 <ButtonLogin onClick={() => setModal(true)} >Criar lista</ButtonLogin>
                 <ContainerLabel>
-                    
+
                     <ContainerBuscar>
                         <input
                             type="seach"
@@ -103,27 +118,6 @@ console.log('Renderiza')
                             onChange={e => setSearch(e.target.value)}
                             value={search}
                         />
-                        {search.length > 0 ? (
-                            <ul>
-                                {FilteredTask.map(taskList => {
-                                    return (
-                                        <li key={taskList.name}>
-                                            {taskList.name}
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                        ) : (
-                            <ul>
-                                {search.map(taskList => {
-                                    return (
-                                        <li key={taskList.name}>
-                                            {taskList.name}
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                        )}
                     </ContainerBuscar>
 
 

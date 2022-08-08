@@ -34,6 +34,7 @@ createServer({
     this.namespace = 'api'
 
     this.get('/taskList', (schema, request) => {
+      console.log(schema.db.tasks)
       return schema.db.tasks
     })
 
@@ -50,7 +51,7 @@ createServer({
         ...attrs,
         id: newId
       }
-console.log(newTask)
+
       return schema.db.tasks.insert(newTask);
     });
 
@@ -61,6 +62,14 @@ console.log(newTask)
 
       return schema.db.tasks.update(id, newObj)
 
+    })
+
+
+    this.del('/delete/:id', (schema, request) => {
+      let id = request.params.id
+      schema.db.tasks.remove(id)
+      console.log(schema.db.tasks.find(id))
+      return "Item removido"
     })
 
 

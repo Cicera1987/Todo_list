@@ -17,7 +17,7 @@ const Card = ({taskObj, index, deleteTask, updateListArray}) => {
 
     const handleDelete = (e) => {
         e.preventDefault()
-        deleteTask(index)
+        deleteTask(taskObj.id)
     }
 
     return (

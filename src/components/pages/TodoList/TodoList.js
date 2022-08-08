@@ -14,7 +14,7 @@ const TodoList = () => {
     const [createPost, setCreatePost] = useState([])
     const [update, setUpdate] = useState(false)
     const [del, setDel] = useState(false)
-    const [taskListFilter, setTaskListFiter] = useState([])
+    // const [taskListFilter, setTaskListFiter] = useState([])
 
     const [search, setSearch] = useState("")
 
@@ -32,9 +32,9 @@ const TodoList = () => {
 
     // }, [search])
 
-    //  const filteredTask = search.length > 0 ? taskList.filter(taskList.name === search) : [];
+    const filteredTask = search.length > 0 ? taskList.filter((obj) => obj.Name.toLowerCase().includes(search.toLowerCase())) : [];
     console.log(search)
-    console.log(taskList)
+    console.log(filteredTask)
 
 
     const deleteTask = (index) => {
@@ -110,7 +110,6 @@ const TodoList = () => {
             <ContainerButton>
                 <ButtonLogin onClick={() => setModal(true)} >Criar lista</ButtonLogin>
                 <ContainerLabel>
-
                     <ContainerBuscar>
                         <input
                             type="seach"
@@ -125,12 +124,12 @@ const TodoList = () => {
                 <ButtonLogin onClick={handleSubmit}><Link to="/">Sair</Link></ButtonLogin>
             </ContainerButton>
 
-            <TaskContainer>
-                {taskList && taskList.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)}
+            <TaskContainer> 
+                {!search.length > 0 
+                    ? taskList && taskList.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />) 
+                    : filteredTask.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)}
             </TaskContainer>
             <CreateTaskPopup toggle={toggle} modal={modal} save={saveTask} />
-
-
         </>
     );
 };

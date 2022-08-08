@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import CreateTaskPopup from '../../molecules/ModalCreatTask';
 import Card from '../../molecules/ModalColors/Card';
-import { TaskContainer, ContainerButton, ContainerLabel } from './style';
+import { TaskContainer, ContainerButton, ContainerLabel, ContainerBuscar } from './style';
 import { Link } from 'react-router-dom';
 import { ButtonLogin } from '../../atoms/Buttons/ButtonLogin/style';
-import { ContainerBuscar } from '../../atoms/inputs/InputBuscar/style'
-
 
 
 const TodoList = () => {
@@ -14,7 +12,6 @@ const TodoList = () => {
     const [createPost, setCreatePost] = useState([])
     const [update, setUpdate] = useState(false)
     const [del, setDel] = useState(false)
-    // const [taskListFilter, setTaskListFiter] = useState([])
 
     const [search, setSearch] = useState("")
 
@@ -25,16 +22,9 @@ const TodoList = () => {
             .catch(err => console.log(err))
     }, [update])
 
-    // useEffect(() => {
-    //     if (search.length > 0 ) {
-    //         setTaskListFiter(taskList.filter(obj => obj.Name.includes(search)))
-    //     }
-
-    // }, [search])
 
     const filteredTask = search.length > 0 ? taskList.filter((obj) => obj.Name.toLowerCase().includes(search.toLowerCase())) : [];
-    console.log(search)
-    console.log(filteredTask)
+ 
 
 
     const deleteTask = (index) => {
@@ -45,7 +35,6 @@ const TodoList = () => {
 
         fetch(`/api/delete/${index}`, {
             method: 'DELETE',
-
 
         })
             .then((response) => response.json())
@@ -70,16 +59,14 @@ const TodoList = () => {
         })
             .then((response) => response.json())
             .then((json) => console.log(json));
-
         setUpdate(!update)
-
-
     }
 
 
     const toggle = () => {
         setModal(!modal);
     }
+
 
     const saveTask = (taskObj) => {
         let tempList = taskList
@@ -96,14 +83,12 @@ const TodoList = () => {
         }).then(res => res.json())
             .then((data) => console.log(data))
             .catch(err => console.log(err))
-
-
     }
-
 
     const handleSubmit = async (e) => {
         e.preventDefault()
     }
+
 
     return (
         <>
@@ -118,8 +103,6 @@ const TodoList = () => {
                             value={search}
                         />
                     </ContainerBuscar>
-
-
                 </ContainerLabel>
                 <ButtonLogin onClick={handleSubmit}><Link to="/">Sair</Link></ButtonLogin>
             </ContainerButton>

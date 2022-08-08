@@ -11,16 +11,16 @@ const [password, setPassword] = useState("");
 const [movies, setMovies] = useState(null)
 
 
-  useEffect(() => {
-    fetch('/api/movies')
-      .then(res => res.json())
-      .then((data) => setMovies(data))
-      .catch(err => console.log(err))
-  }, [])
-
-
 const handleSubmit = async (e) => {
   e.preventDefault()
+
+  fetch('/api/movies', {
+    method: "POST",
+    body: JSON.stringify(""),
+    headers: { "Content-type": "application/json; charset=UTF-8" }
+}).then(res => res.json())
+    .then((data) => setMovies(data))
+    .catch(err => console.log(err))
 };
 
   return (

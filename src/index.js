@@ -73,7 +73,7 @@ createServer({
     })
 
 
-    this.get("/movies", () => {
+    this.post("/movies", () => {
       return {
         movies: [
           { email: "ccica_25@hotmail.com", password: "123" },

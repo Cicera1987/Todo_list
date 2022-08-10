@@ -6,22 +6,26 @@ import { ButtonLogin } from "../../atoms/Buttons/ButtonLogin/style";
 
 const Login = () => {
 
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
-const [movies, setMovies] = useState(null)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [users, setUsers] = useState(null)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    fetch('/api/users', {
+      method: 'post',
+      body: JSON.stringify({ email: email, password: password }),
+      headers: { "Content-type": "application/json; charset=UTF-8" }
+    }).then((res) => res.json())
+      .then((json) => {
+        setUsers(json.users)
+        console.log(json)
+      })
+      .catch(err => console.log(err))
+
+  };
 
 
-const handleSubmit = async (e) => {
-  e.preventDefault()
-
-  fetch('/api/movies', {
-    method: "POST",
-    body: JSON.stringify(""),
-    headers: { "Content-type": "application/json; charset=UTF-8" }
-}).then(res => res.json())
-    .then((data) => setMovies(data))
-    .catch(err => console.log(err))
-};
 
   return (
     <LoginEnter>

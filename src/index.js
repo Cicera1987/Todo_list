@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { createServer, Model, JSONAPISerializer } from "miragejs"
+import { createServer, Model, JSONAPISerializer, Response } from "miragejs"
 import 'bootstrap/dist/css/bootstrap.css';
 
 
 createServer({
   models: {
+    users: Model,
     tasks: Model,
     create: Model,
     newTask: Model,
@@ -25,6 +26,9 @@ createServer({
         { id: 2, Name: "teste", Description: "Ola", State: "Pendente" },
         { id: 3, Name: "teste", Description: "Ola", State: "Pendente" }
       ],
+      users:[
+        { id: 1, email: "ccica_25@hotmail.com", password: "123"},
+      ]
 
     })
 
@@ -73,12 +77,20 @@ createServer({
     })
 
 
-    this.post("/movies", () => {
-      return {
-        movies: [
-          { email: "ccica_25@hotmail.com", password: "123" },
-        ],
+    this.post("/users", (schema, request) => {
+
+      const user = schema.db.users.findBy({email:JSON.parse(request.requestBody).email})
+      if(!user){
+        return new Response(400, { some: 'header' }, { errors: [ 'Usuario não existe'] });
+        
       }
+      
+      if(user.password !== JSON.parse(request.requestBody).password){
+        return new Response(400, { some: 'header' }, { errors: [ 'Logn ou senha invalida'] });
+      }
+
+      return 'Login com sucesso!'
+
     })
   },
 })

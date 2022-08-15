@@ -55,13 +55,13 @@ const TodoList = () => {
 
         fetch(`/api/update/${obj.id}`, {
             method: 'PATCH',
-            body: JSON.stringify(obj),
+            body: JSON.stringify(obj.id),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         })
             .then((response) => response.json())
-            .then((json) => console.log(json));
+            .then((json) => setUpdate(json));
         setUpdate(!update)
     }
 

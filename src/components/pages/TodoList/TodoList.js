@@ -41,7 +41,7 @@ const TodoList = () => {
 
         })
             .then((response) => response.json())
-            .then((json) => console.log(json));
+            .then((json) => setDel(json));
 
         setDel(!del)
     }
@@ -82,7 +82,7 @@ const TodoList = () => {
             body: JSON.stringify(taskObj),
             headers: { "Content-type": "application/json; charset=UTF-8" }
         }).then(res => res.json())
-            .then((data) => console.log(data))
+            .then((data) => setCreatePost(data))
             .catch(err => console.log(err))
     }
 

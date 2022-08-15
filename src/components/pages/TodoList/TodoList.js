@@ -2,30 +2,33 @@ import React, { useEffect, useState } from 'react';
 import CreateTaskPopup from '../../molecules/ModalCreatTask';
 import Card from '../../molecules/ModalColors/Card';
 import { TaskContainer, ContainerButton, ContainerLabel, ContainerBuscar } from './style';
-import { Link } from 'react-router-dom';
+import { StyleLink } from '../../atoms/StyleLink/style';
 import { ButtonLogin } from '../../atoms/Buttons/ButtonLogin/style';
+import { useNavigate } from "react-router-dom";
+
 
 
 const TodoList = () => {
+
     const [modal, setModal] = useState(false);
-    const [taskList, setTaskList] = useState([])
+    const [taskList, setTaskList] = useState(JSON.parse(localStorage.getItem('taskList')) || [])
     const [createPost, setCreatePost] = useState([])
     const [update, setUpdate] = useState(false)
     const [del, setDel] = useState(false)
-
     const [search, setSearch] = useState("")
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('/api/taskList/')
             .then(res => res.json())
-            .then((data) => setTaskList(data))
+            .then((data) => {
+                localStorage.setItem('taskList', JSON.stringify(data))
+            })
             .catch(err => console.log(err))
     }, [update])
 
 
     const filteredTask = search.length > 0 ? taskList.filter((obj) => obj.Name.toLowerCase().includes(search.toLowerCase())) : [];
- 
-
 
     const deleteTask = (index) => {
         let tempList = taskList
@@ -62,11 +65,9 @@ const TodoList = () => {
         setUpdate(!update)
     }
 
-
     const toggle = () => {
         setModal(!modal);
     }
-
 
     const saveTask = (taskObj) => {
         let tempList = taskList
@@ -87,8 +88,8 @@ const TodoList = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        navigate("/")
     }
-
 
     return (
         <>
@@ -104,12 +105,12 @@ const TodoList = () => {
                         />
                     </ContainerBuscar>
                 </ContainerLabel>
-                <ButtonLogin onClick={handleSubmit}><Link to="/">Sair</Link></ButtonLogin>
+                <ButtonLogin onClick={handleSubmit}>Sair</ButtonLogin>
             </ContainerButton>
 
-            <TaskContainer> 
-                {!search.length > 0 
-                    ? taskList && taskList.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />) 
+            <TaskContainer>
+                {!search.length > 0
+                    ? taskList && taskList.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)
                     : filteredTask.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)}
             </TaskContainer>
             <CreateTaskPopup toggle={toggle} modal={modal} save={saveTask} />

@@ -4,7 +4,6 @@ import App from './App';
 import { createServer, Model, JSONAPISerializer, Response } from "miragejs"
 import 'bootstrap/dist/css/bootstrap.css';
 
-
 createServer({
   models: {
     users: Model,
@@ -22,12 +21,10 @@ createServer({
     server.db.loadData({
 
       tasks: [
-        { id: 1, Name: "teste", Description: "Ola", State: "Pendente" },
-        { id: 2, Name: "teste", Description: "Ola", State: "Pendente" },
-        { id: 3, Name: "teste", Description: "Ola", State: "Pendente" }
+
       ],
       users:[
-        { id: 1, email: "ccica_25@hotmail.com", password: "123"},
+        { id: 1, Name: "Cica", email: "ccica_25@hotmail.com", password: "123"},
       ]
 
     })
@@ -46,16 +43,18 @@ createServer({
     //Responding to Post request
     this.post("/create", (schema, request) => {
       let attrs = JSON.parse(request.requestBody);
-      let newId = Number(schema.db.tasks[schema.db.tasks.length - 1].id) + 1
+      let newId;
 
       if (schema.db.tasks[0] === undefined) {
         newId = 1
+      } else{
+        newId = Number(schema.db.tasks[schema.db.tasks.length - 1].id) + 1
       }
       const newTask = {
         ...attrs,
         id: newId
       }
-
+      console.log(newTask)
       return schema.db.tasks.insert(newTask);
     });
 
@@ -89,7 +88,7 @@ createServer({
         return new Response(400, { some: 'header' }, { errors: [ 'Logn ou senha invalida'] });
       }
 
-      return 'Login com sucesso!'
+      return {message:'Login com sucesso!', users: user.Name}
 
     })
   },
@@ -98,7 +97,6 @@ createServer({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
     <App />
-  </React.StrictMode>
+
 );

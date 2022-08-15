@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, ModalHeader, Button, ModalBody, ModalFooter } from 'reactstrap';
-import { ContainerSelect } from '../ModalCreatTask/style';
+import { ContainerSelect, TitleLabel, StyleForm } from '../ModalCreatTask/style';
 
 
 const EditTaskPopup = ({ modal, toggle, updateTask, taskObj, value }) => {
@@ -43,7 +43,7 @@ const EditTaskPopup = ({ modal, toggle, updateTask, taskObj, value }) => {
             <ModalHeader toggle={toggle}>Página de Edição</ModalHeader>
             <ModalBody>
                 <div className="form-group">
-                    <label>Titulo</label>
+                    <TitleLabel>Titulo</TitleLabel>
                     <input type="text"
                         className="form-control"
                         value={taskName}
@@ -58,7 +58,7 @@ const EditTaskPopup = ({ modal, toggle, updateTask, taskObj, value }) => {
                     <option value="Concluido">Concluido</option>
                 </ContainerSelect>
                 <div className="form-group">
-                    <label>Descrição</label>
+                    <TitleLabel>Descrição</TitleLabel>
                     <textarea rows="5"
                         className="form-control"
                         value={description}

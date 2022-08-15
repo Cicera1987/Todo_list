@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import CreateTaskPopup from '../../molecules/ModalCreatTask';
 import Card from '../../molecules/ModalColors/Card';
 import { TaskContainer, ContainerButton, ContainerLabel, ContainerBuscar } from './style';
-import { StyleLink } from '../../atoms/StyleLink/style';
 import { ButtonLogin } from '../../atoms/Buttons/ButtonLogin/style';
 import { useNavigate } from "react-router-dom";
 

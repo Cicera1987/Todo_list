@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import CreateTaskPopup from '../../molecules/ModalCreatTask';
 import Card from '../../molecules/ModalColors/Card';
-import { TaskContainer, ContainerButton, ContainerLabel, ContainerBuscar } from './style';
+import { TaskContainer, ContainerButton, ContainerLabel, ContainerBuscar, Pagination } from './style';
 import { ButtonLogin } from '../../atoms/Buttons/ButtonLogin/style';
 import { useNavigate } from "react-router-dom";
+import PaginationComponents from '../../molecules/ModalPages/PaginationComponents';
+import PaginationSelector from '../../molecules/ModalPages/PaginationSelector';
 
 
 
@@ -16,15 +18,23 @@ const TodoList = () => {
     const [del, setDel] = useState(false)
     const [search, setSearch] = useState("")
     const navigate = useNavigate();
+    const [itensPerPage, setItensPerPage] = useState(8)
+    const [currentPage, setCurrentPage] = useState(0)
+    const pages = Math.ceil(taskList.length / itensPerPage)
+    const startIndex = currentPage * itensPerPage;
+    const endIndex = startIndex + itensPerPage;
+    const currentItens = taskList.slice(startIndex, endIndex)
+
 
     useEffect(() => {
         fetch('/api/taskList/')
             .then(res => res.json())
             .then((data) => {
                 localStorage.setItem('taskList', JSON.stringify(data))
+                setCurrentPage(0)
             })
             .catch(err => console.log(err))
-    }, [update])
+    }, [update, itensPerPage])
 
 
     const filteredTask = search.length > 0 ? taskList.filter((obj) => obj.Name.toLowerCase().includes(search.toLowerCase())) : [];
@@ -90,6 +100,7 @@ const TodoList = () => {
         navigate("/")
     }
 
+
     return (
         <>
             <ContainerButton>
@@ -109,10 +120,13 @@ const TodoList = () => {
 
             <TaskContainer>
                 {!search.length > 0
-                    ? taskList && taskList.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)
+                    ? currentItens && currentItens.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)
                     : filteredTask.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)}
             </TaskContainer>
+            <PaginationSelector itensPerPage={itensPerPage} setItensPerPage={setItensPerPage} />
+            <PaginationComponents pages={pages} setCurrentPage={setCurrentPage} />
             <CreateTaskPopup toggle={toggle} modal={modal} save={saveTask} />
+
         </>
     );
 };

@@ -78,12 +78,12 @@ createServer({
 
       const user = schema.db.users.findBy({ email: JSON.parse(request.requestBody).email })
       if (!user) {
-        return new Response(400, { some: 'header' }, { errors:'Usuario não existe' });
+        return new Response(400, { some: 'header' }, { errors: 'Usuario não existe' });
 
       }
 
       if (user.password !== JSON.parse(request.requestBody).password) {
-        return new Response(400, { some: 'header' }, { errors:'Logn ou senha invalida'});
+        return new Response(400, { some: 'header' }, { errors: 'Logn ou senha invalida' });
       }
 
       return { message: 'Login com sucesso!', users: user.name }
@@ -95,7 +95,5 @@ createServer({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-
-  <App />
-
+    <App />
 );

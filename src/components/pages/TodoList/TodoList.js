@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import CreateTaskPopup from '../../molecules/ModalCreatTask';
 import Card from '../../molecules/ModalColors/Card';
-import { TaskContainer, ContainerButton, ContainerLabel, ContainerBuscar, Pagination } from './style';
+import { TaskContainer, ContainerButton } from './style';
 import { ButtonLogin } from '../../atoms/Buttons/ButtonLogin/style';
 import { useNavigate } from "react-router-dom";
 import PaginationComponents from '../../molecules/ModalPages/PaginationComponents';
 import PaginationSelector from '../../molecules/ModalPages/PaginationSelector';
+import InputSearch from '../../atoms/Inputs/InputSearch/InputSearch';
 
 
 
@@ -37,8 +38,6 @@ const TodoList = () => {
     }, [update, itensPerPage])
 
 
-    const filteredTask = search.length > 0 ? taskList.filter((obj) => obj.Name.toLowerCase().includes(search.toLowerCase())) : [];
-
     const deleteTask = (index) => {
         let tempList = taskList
         tempList.splice(index, 1)
@@ -49,7 +48,7 @@ const TodoList = () => {
             method: 'DELETE',
 
         })
-            .then((response) => response.json())
+            .then((res) => res.json())
             .then((json) => setDel(json));
 
         setDel(!del)
@@ -61,7 +60,6 @@ const TodoList = () => {
         tempList[index] = obj
         localStorage.setItem("taskList", JSON.stringify(tempList))
         setTaskList(tempList)
-
         fetch(`/api/update/${obj.id}`, {
             method: 'PATCH',
             body: JSON.stringify(obj.id),
@@ -69,14 +67,11 @@ const TodoList = () => {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         })
-            .then((response) => response.json())
+            .then((res) => res.json())
             .then((json) => setUpdate(json));
         setUpdate(!update)
     }
 
-    const toggle = () => {
-        setModal(!modal);
-    }
 
     const saveTask = (taskObj) => {
         let tempList = taskList
@@ -85,7 +80,6 @@ const TodoList = () => {
         setTaskList(taskList)
         setCreatePost(taskObj)
         setModal(false)
-
         fetch('/api/create', {
             method: "POST",
             body: JSON.stringify(taskObj),
@@ -101,23 +95,22 @@ const TodoList = () => {
     }
 
 
+    const toggle = () => {
+        setModal(!modal);
+    }
+
+
+    const filteredTask = search.length > 0 ?
+        taskList.filter((obj) =>
+            obj.Name.toLowerCase().includes(search.toLowerCase())) : [];
+
     return (
         <>
             <ContainerButton>
                 <ButtonLogin onClick={() => setModal(true)} >Criar lista</ButtonLogin>
-                <ContainerLabel>
-                    <ContainerBuscar>
-                        <input
-                            type="seach"
-                            placeholder='Buscar'
-                            onChange={e => setSearch(e.target.value)}
-                            value={search}
-                        />
-                    </ContainerBuscar>
-                </ContainerLabel>
+                <InputSearch search={search} setSearch={setSearch} />
                 <ButtonLogin onClick={handleSubmit}>Sair</ButtonLogin>
             </ContainerButton>
-
             <TaskContainer>
                 {!search.length > 0
                     ? currentItens && currentItens.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)

@@ -35,7 +35,6 @@ createServer({
     this.namespace = 'api'
 
     this.get('/taskList', (schema, request) => {
-      // console.log(schema.db.tasks)
       return schema.db.tasks
     })
 
@@ -58,7 +57,7 @@ createServer({
     });
 
 
-    this.patch("/update/:id", function (schema, request) {
+    this.patch("/update/:id",(schema, request) => {
       let id = request.params.id
       const newObj = JSON.parse(request.requestBody)
       return schema.db.tasks.update(id, newObj)
@@ -69,7 +68,6 @@ createServer({
     this.del('/delete/:id', (schema, request) => {
       let id = request.params.id
       schema.db.tasks.remove(id)
-      // console.log(schema.db.tasks.find(id))
       return { message: 'Item removido' }
     })
 
@@ -79,13 +77,10 @@ createServer({
       const user = schema.db.users.findBy({ email: JSON.parse(request.requestBody).email })
       if (!user) {
         return new Response(400, { some: 'header' }, { errors: 'Usuario não existe' });
-
       }
-
       if (user.password !== JSON.parse(request.requestBody).password) {
         return new Response(400, { some: 'header' }, { errors: 'Logn ou senha invalida' });
       }
-
       return { message: 'Login com sucesso!', users: user.name }
 
     })

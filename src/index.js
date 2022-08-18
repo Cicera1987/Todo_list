@@ -51,8 +51,10 @@ createServer({
       }
       const newTask = {
         ...attrs,
-        id: newId
+        id: Number(newId)
       }
+  console.log(newTask)
+      console.log(schema.db.tasks)
       return schema.db.tasks.insert(newTask);
     });
 

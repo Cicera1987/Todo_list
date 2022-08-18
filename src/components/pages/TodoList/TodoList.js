@@ -13,7 +13,7 @@ import InputSearch from '../../atoms/Inputs/InputSearch/InputSearch';
 const TodoList = () => {
 
     const [modal, setModal] = useState(false);
-    const [taskList, setTaskList] = useState(JSON.parse(localStorage.getItem('taskList')) || [])
+    const [taskList, setTaskList] = useState(JSON.parse(localStorage.getItem("taskList")) || [])
     const [createPost, setCreatePost] = useState([])
     const [update, setUpdate] = useState(false)
     const [del, setDel] = useState(false)
@@ -24,18 +24,21 @@ const TodoList = () => {
     const pages = Math.ceil(taskList.length / itensPerPage)
     const startIndex = currentPage * itensPerPage;
     const endIndex = startIndex + itensPerPage;
-    const currentItens = taskList.slice(startIndex, endIndex)
 
+    const currentItens = taskList.slice(startIndex, endIndex)
+  
 
     useEffect(() => {
         fetch('/api/taskList/')
             .then(res => res.json())
             .then((data) => {
                 localStorage.setItem('taskList', JSON.stringify(data))
+                setTaskList(data)
                 setCurrentPage(0)
+                console.log(data)
             })
             .catch(err => console.log(err))
-    }, [update, itensPerPage])
+    }, [update, itensPerPage, createPost])
 
 
     const deleteTask = (index) => {
@@ -76,8 +79,6 @@ const TodoList = () => {
     const saveTask = (taskObj) => {
         let tempList = taskList
         tempList.push(taskObj)
-        localStorage.setItem("taskList", JSON.stringify(tempList))
-        setTaskList(taskList)
         setCreatePost(taskObj)
         setModal(false)
         fetch('/api/create', {

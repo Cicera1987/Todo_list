@@ -58,6 +58,9 @@ const TodoList = () => {
     const updateListArray = (obj, index) => {
         let tempList = taskList
         tempList[index] = obj
+        console.log(obj)
+        console.log(index)
+        console.log(tempList)
         localStorage.setItem("taskList", JSON.stringify(tempList))
         setTaskList(tempList)
         fetch(`/api/update/${obj.id}`, {

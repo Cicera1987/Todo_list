@@ -23,13 +23,13 @@ const TodoList = () => {
     const [del, setDel] = useState(false)
     const [search, setSearch] = useState("")
     const navigate = useNavigate();
-    const [itensPerPage, setItensPerPage] = useState(10)
+    const [itemsPerPage, setItemsPerPage] = useState(10)
     const [currentPage, setCurrentPage] = useState(0)
 
 
-    const pages = Math.ceil(taskList.length / itensPerPage)
-    const startIndex = currentPage * itensPerPage;
-    const endIndex = startIndex + itensPerPage;
+    const pages = Math.ceil(taskList.length / itemsPerPage)
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
     const currentItens = taskList.slice(startIndex, endIndex)
 
 
@@ -42,7 +42,7 @@ const TodoList = () => {
                     setCurrentPage(0)
                 }).catch(err => console.log(err))
         })
-    }, [update, itensPerPage, createPost])
+    }, [update, itemsPerPage, createPost])
 
 
     const deleteTask = (index) => {
@@ -64,30 +64,29 @@ const TodoList = () => {
         tempList[index] = obj
         localStorage.setItem("taskList", JSON.stringify(tempList))
         setTaskList(tempList)
-        http.patch(`/api/update/${obj.id}`, {
-            method: 'PATCH',
-            body: JSON.stringify(obj.id),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        }).then(res => {
-            setUpdate(res.data)
+        http.patch(`/api/update/${obj.id}`, obj).then(res => {
+            setUpdate(res.data.update)
 
         }).catch(err => console.log(err))
     }
-    if (!update);
+
+    const verifyId = () => {
+        let id = 1
+        if(taskList.at(-1)){
+           id =  Number(taskList.at(-1).id) +1
+            return id
+        }
+        return id
+
+    }
 
     const saveTask = (taskObj) => {
         let tempList = taskList
-        tempList.push(taskObj)
+        tempList.push({...taskObj, id:verifyId()})
         localStorage.setItem("taskList", JSON.stringify(tempList))
         setTaskList(taskList)
         setModal(false)
-        http.post('/api/create', {
-            method: "POST",
-            body: JSON.stringify(taskObj),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
-        }).then(res => {
+        http.post('/api/create', taskObj).then(res => {
             setCreatePost(res.data)
 
         }).catch(err => console.log(err))
@@ -119,7 +118,7 @@ const TodoList = () => {
                     ? currentItens && currentItens.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)
                     : filteredTask.map((obj, index) => <Card key={index} taskObj={obj} index={index} deleteTask={deleteTask} updateListArray={updateListArray} />)}
             </TaskContainer>
-            <PaginationSelector itensPerPage={itensPerPage} setItensPerPage={setItensPerPage} />
+            <PaginationSelector itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
             <PaginationComponents pages={pages} setCurrentPage={setCurrentPage} />
             <CreateTaskPopup toggle={toggle} modal={modal} save={saveTask} />
 

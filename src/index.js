@@ -44,18 +44,8 @@ new Server({
     //Responding to Post request
     this.post("/create", (schema, request) => {
       let attrs = JSON.parse(request.requestBody);
-      let newId;
-
-      if (schema.db.tasks[0] === undefined) {
-        newId = 1
-      } else {
-        newId = Number(schema.db.tasks[schema.db.tasks.length - 1].id) + 1
-      }
-      const newTask = {
-        ...attrs,
-        id: newId
-      }
-      return schema.db.tasks.insert(newTask);
+    
+      return schema.db.tasks.insert(attrs);
     });
 
 
@@ -75,7 +65,7 @@ new Server({
 
 
     this.post("/users", (schema, request) => {
-
+      console.log(request.requestBody)
       const user = schema.db.users.findBy({ email: JSON.parse(request.requestBody).email })
       if (!user) {
         return new Response(400, { some: 'header' }, { errors: 'Usuario não existe' });

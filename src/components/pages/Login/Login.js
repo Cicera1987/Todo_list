@@ -21,22 +21,19 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    http.post('/api/users', {
-      method: 'POST',
-      body: JSON.stringify({ email: email, password: password}),
-      headers: { "Content-type": "application/json; charset=UTF-8" }
-    }).then(res => {
-        setUsers(res.data)
-        navigate("/Todolist")
-
-      }).catch(err => setErr(err))
+    const data = { email: email, password: password }
+    let tempList = users
+    localStorage.setItem("users", JSON.stringify(tempList))
+    http.post('/api/users', data).then(res => {
+      setUsers(res.data.users)
+    }).catch(err => setErr(err))
   }
 
-  // useEffect(() => {
-  //   if (users) {
-  //     navigate("/Todolist")
-  //   }
-  // }, [users])
+  useEffect(() => {
+    if (users) {
+      navigate("/Todolist")
+    }
+  }, [users])
 
 
   return (

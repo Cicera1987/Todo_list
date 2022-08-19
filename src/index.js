@@ -1,33 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { createServer, Model, JSONAPISerializer, Response } from "miragejs"
+import { Model, Response, Server } from "miragejs"
 import 'bootstrap/dist/css/bootstrap.css';
 
-
-createServer({
+new Server({
   models: {
     users: Model,
     tasks: Model,
     create: Model,
     newTask: Model,
-
+    delete: Model,
+    taskList: Model,
 
   },
-  serializers: {
-    application: JSONAPISerializer,
-  },
+
 
   seeds(server) {
     server.db.loadData({
 
       tasks: [
-        { id: 1, Name: "teste", Description: "Ola", State: "Pendente" },
-        { id: 2, Name: "teste", Description: "Ola", State: "Pendente" },
-        { id: 3, Name: "teste", Description: "Ola", State: "Pendente" }
+        { id: 1, Name: "teste", Description: "Task Inicial", State: "Pendente" },
       ],
-      users:[
-        { id: 1, email: "ccica_25@hotmail.com", password: "123"},
+      users: [
+        { id: 1, name: "Cica", email: "ccica_25@hotmail.com", password: "123" },
       ]
 
     })
@@ -35,35 +31,27 @@ createServer({
   },
 
   routes() {
-    this.namespace = 'api'
 
-    this.get('/taskList', (schema, request) => {
-      console.log(schema.db.tasks)
-      return schema.db.tasks
+    this.namespace = 'api';
+    this.urlPrefix = 'http://todolistdesafio.com.br'
+
+
+    this.get("/taskList", (schema) => {
+      return schema.tasks.all()
     })
 
 
     //Responding to Post request
     this.post("/create", (schema, request) => {
       let attrs = JSON.parse(request.requestBody);
-      let newId = Number(schema.db.tasks[schema.db.tasks.length - 1].id) + 1
-
-      if (schema.db.tasks[0] === undefined) {
-        newId = 1
-      }
-      const newTask = {
-        ...attrs,
-        id: newId
-      }
-
-      return schema.db.tasks.insert(newTask);
+    
+      return schema.db.tasks.insert(attrs);
     });
 
 
-    this.patch("/update/:id", function (schema, request) {
+    this.patch("/update/:id",(schema, request) => {
       let id = request.params.id
       const newObj = JSON.parse(request.requestBody)
-
       return schema.db.tasks.update(id, newObj)
 
     })
@@ -72,24 +60,20 @@ createServer({
     this.del('/delete/:id', (schema, request) => {
       let id = request.params.id
       schema.db.tasks.remove(id)
-      console.log(schema.db.tasks.find(id))
-      return "Item removido"
+      return { message: 'Item removido' }
     })
 
 
     this.post("/users", (schema, request) => {
-
-      const user = schema.db.users.findBy({email:JSON.parse(request.requestBody).email})
-      if(!user){
-        return new Response(400, { some: 'header' }, { errors: [ 'Usuario não existe'] });
-        
+      console.log(request.requestBody)
+      const user = schema.db.users.findBy({ email: JSON.parse(request.requestBody).email })
+      if (!user) {
+        return new Response(400, { some: 'header' }, { errors: 'Usuario não existe' });
       }
-      
-      if(user.password !== JSON.parse(request.requestBody).password){
-        return new Response(400, { some: 'header' }, { errors: [ 'Logn ou senha invalida'] });
+      if (user.password !== JSON.parse(request.requestBody).password) {
+        return new Response(400, { some: 'header' }, { errors: 'Logn ou senha invalida' });
       }
-
-      return 'Login com sucesso!'
+      return { message: 'Login com sucesso!', users: user.name }
 
     })
   },
@@ -98,7 +82,5 @@ createServer({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
     <App />
-  </React.StrictMode>
 );

@@ -4,7 +4,7 @@ import { HeaderList } from './style'
 const Header = () => {
   return (
     <HeaderList>
-    <h3>Todo List</h3>      
+    <h3>Todo List</h3>     
     </HeaderList>
   )
 }

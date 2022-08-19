@@ -1,4 +1,4 @@
-import "./App.css";
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "./index.css";
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
@@ -17,7 +17,7 @@ function App() {
       <div className="container">
         <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/login" element={<Login/>} />
+        <Route path="/login/" element={<Login/>} />
         <Route path="/todolist" element={<TodoList/>}/>
         </Routes>
       </div>

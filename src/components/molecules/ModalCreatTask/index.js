@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TitleTask, ContainerSelect } from './style';
+import { TitleTask, ContainerSelect, TitleLabel,StyleForm } from './style';
 import { ContainerButton } from '../../pages/TodoList/style'
 import { Modal } from 'reactstrap';
 import { ButtonLogin } from '../../atoms/Buttons/ButtonLogin/style';
@@ -43,7 +43,7 @@ const CreateTaskPopup = ({ modal, toggle, save }) => {
             <TitleTask toggle={toggle}>Criar lista</TitleTask>
             <form onSubmit={handleSave}>
                 <div className="form-group">
-                    <label>Título</label>
+                    <TitleLabel>Título</TitleLabel>
                     <input type="text"
                         className="form-control"
                         value={taskName}
@@ -60,7 +60,7 @@ const CreateTaskPopup = ({ modal, toggle, save }) => {
             </ContainerSelect>
 
                 <div className="form-group">
-                    <label>Decrição</label>
+                    <TitleLabel>Decrição</TitleLabel>
                     <textarea
                         rows="5"
                         className="form-control"

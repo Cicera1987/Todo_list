@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom"
 import {ContainerHome, ContainerTitle} from './style'
 import { ButtonLogin } from '../../atoms/Buttons/ButtonLogin/style';
+import { StyleLink } from '../../atoms/StyleLink/style';
 
 
 const handleSubmit = async (e) => {
@@ -14,7 +14,8 @@ const Home = () => {
     <>
     <ContainerTitle >Organize sua lista de tarefas!</ContainerTitle >
     <ContainerHome>
-        <ButtonLogin onClick={handleSubmit}><Link to="/Login">Iniciar</Link></ButtonLogin>
+      
+        <ButtonLogin onClick={handleSubmit}><StyleLink to="/login">Login</StyleLink></ButtonLogin>
       </ContainerHome>
     </>
   );

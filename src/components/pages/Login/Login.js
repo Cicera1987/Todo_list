@@ -1,7 +1,14 @@
-import { Link } from "react-router-dom"
+import * as React from "react";
 import { useEffect, useState } from "react";
 import { FormLogin, LoginEnter, LabelContainer, ContainerTitleLogin } from "./style";
 import { ButtonLogin } from "../../atoms/Buttons/ButtonLogin/style";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios'
+
+const http = axios.create({
+  baseURL: 'http://todolistdesafio.com.br'
+})
+
 
 
 const Login = () => {
@@ -9,22 +16,24 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState(null)
+  const [err, setErr] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    fetch('/api/users', {
-      method: 'post',
-      body: JSON.stringify({ email: email, password: password }),
-      headers: { "Content-type": "application/json; charset=UTF-8" }
-    }).then((res) => res.json())
-      .then((json) => {
-        setUsers(json.users)
-        console.log(json)
-      })
-      .catch(err => console.log(err))
+    const data = { email: email, password: password }
+    let tempList = users
+    localStorage.setItem("users", JSON.stringify(tempList))
+    http.post('/api/users', data).then(res => {
+      setUsers(res.data.users)
+    }).catch(err => setErr(err))
+  }
 
-  };
-
+  useEffect(() => {
+    if (users) {
+      navigate("/Todolist")
+    }
+  }, [users])
 
 
   return (
@@ -36,6 +45,7 @@ const Login = () => {
           <input
             type="email"
             name="email"
+            id="emil"
             required
             placeholder="Insira seu e-mail"
             value={email}
@@ -47,6 +57,7 @@ const Login = () => {
           <input
             type="password"
             name="password"
+            id="password"
             required
             placeholder="Insira sua Senha"
             value={password}
@@ -54,7 +65,7 @@ const Login = () => {
           />
         </LabelContainer>
       </FormLogin>
-      <ButtonLogin onClick={handleSubmit}><Link to="/TodoList">Login </Link></ButtonLogin>
+      <ButtonLogin onClick={handleSubmit}>Login</ButtonLogin>
     </LoginEnter>
 
   );

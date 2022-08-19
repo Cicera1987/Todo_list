@@ -9,7 +9,7 @@ export const ContainerBuscar = styled.select`
     margin: 1px;
     border: solid 1px plax;
 
-}`
+`
 export const InputSelectOption = styled.option`
     color: black;
     height: 100px;

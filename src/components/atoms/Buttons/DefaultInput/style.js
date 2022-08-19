@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const DefaultInput = styled.input`
+export const DefaultInput = styled.input`
     background-color: #cad4e8;
     display: flex;
     flex-wrap: wrap;
@@ -12,6 +12,9 @@ const DefaultInput = styled.input`
     border: 1px solid rgb(155, 153, 153);
     margin-top: 1em;
     margin-bottom: 1em;
-    font-size:1em; 
+    font-size:1em;
+    
+    focus{
+        outline: none;
+    }
 `
-export default DefaultInput;

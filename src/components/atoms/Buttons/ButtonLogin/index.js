@@ -1,16 +1,10 @@
-import React, {Componet} from "react";
 import ButtonLogin from './style'
 
-export class Button extends Componet {
-    render() {
-        return(
-            <ButtonLogin>
-            <button 
-            type="submit" 
-            >
+
+export const Button = () => {
+    return (
+        <ButtonLogin>
             {this.props.children}
-            </button>
-            </ButtonLogin>
-        )
-    }
+        </ButtonLogin>
+    )
 }

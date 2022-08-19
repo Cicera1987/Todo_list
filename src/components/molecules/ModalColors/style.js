@@ -20,7 +20,7 @@ export const CardContainer = styled.div`
 
 export const CardWrapper = styled.div`
     width: 270px; 
-    height: 210px; 
+    height: 250px; 
     box-shadow: 0px 3px 50px #A5A5A5;
     display: flex;
     flex-direction: column;
@@ -28,7 +28,7 @@ export const CardWrapper = styled.div`
 `
 export const TaskHolder = styled.div`
     width: 100%;
-    height: 200px;
+    height: 400px;
     padding: 1em 1em;
     display : flex;
     flex-direction: column;
@@ -41,6 +41,11 @@ export const CardTop = styled.div`
     width: 100%;
 `
 export const CardText = styled.p`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     font-size: 1rem;
     margim: 0.3em;
 `
@@ -48,7 +53,10 @@ export const CardIcon = styled.div`
     display:flex;
     flex-direction:row;
     justify-content: flex-end;
-    bottom:0.5em ;
+    align-items: flex-end
+    position: absolute;
+    margin: 0 10px;
+    bottom:0.7em ;
     
 svg {
     cursor: pointer;
@@ -56,8 +64,8 @@ svg {
     color: DodgerBlue;
 
 }
-
 `
+
 export const CardSelect = styled.div`
     margin-top: 0.5em;
     margin-bottom: 1.5em;

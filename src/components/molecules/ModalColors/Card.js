@@ -21,12 +21,10 @@ const Card = ({ taskObj, index, deleteTask, updateListArray }) => {
         e.preventDefault()
         deleteTask(taskObj.id)
     }
-console.log(taskObj)
 
-    useEffect(() => {
-        // console.log(taskObj)
-        // console.log(index)
-    }, [ taskObj, index])
+useEffect(()=>{
+
+}, [taskObj, index])
 
     return (
         <CardWrapper>

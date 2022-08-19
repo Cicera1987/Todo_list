@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pagination, buttonPage } from './style';
+import { Pagination} from './style';
 
 const PaginationComponents = ({ pages, setCurrentPage }) => {
   return (

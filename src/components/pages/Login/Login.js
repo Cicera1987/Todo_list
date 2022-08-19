@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 import { FormLogin, LoginEnter, LabelContainer, ContainerTitleLogin } from "./style";
 import { ButtonLogin } from "../../atoms/Buttons/ButtonLogin/style";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
+
+const http = axios.create({
+  baseURL: 'http://todolistdesafio.com.br'
+})
 
 
 
@@ -14,24 +19,25 @@ const Login = () => {
   const [err, setErr] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (users) {
-      navigate("/Todolist")
-    }
-  }, [users])
-
   const handleSubmit = async (e) => {
     e.preventDefault()
-    fetch('/api/users', {
-      method: 'post',
-      body: JSON.stringify({ email, password: password }),
+    http.post('/api/users', {
+      method: 'POST',
+      body: JSON.stringify({ email: email, password: password}),
       headers: { "Content-type": "application/json; charset=UTF-8" }
-    }).then((res) => res.json())
-      .then((json) => {
-        setUsers(json.users)
-      })
-      .catch(err => setErr(err))
-  };
+    }).then(res => {
+        setUsers(res.data)
+        navigate("/Todolist")
+
+      }).catch(err => setErr(err))
+  }
+
+  // useEffect(() => {
+  //   if (users) {
+  //     navigate("/Todolist")
+  //   }
+  // }, [users])
+
 
   return (
     <LoginEnter>

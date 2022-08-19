@@ -7,37 +7,41 @@ import { useNavigate } from "react-router-dom";
 import PaginationComponents from '../../molecules/ModalPages/PaginationComponents';
 import PaginationSelector from '../../molecules/ModalPages/PaginationSelector';
 import InputSearch from '../../atoms/Inputs/InputSearch/InputSearch';
+import axios from 'axios'
 
+const http = axios.create({
+    baseURL: 'http://todolistdesafio.com.br'
+})
 
 
 const TodoList = () => {
 
     const [modal, setModal] = useState(false);
-    const [taskList, setTaskList] = useState(JSON.parse(localStorage.getItem("taskList")) || [])
+    const [taskList, setTaskList] = useState(JSON.parse(localStorage.getItem('taskList')) || [])
     const [createPost, setCreatePost] = useState([])
     const [update, setUpdate] = useState(false)
     const [del, setDel] = useState(false)
     const [search, setSearch] = useState("")
     const navigate = useNavigate();
-    const [itensPerPage, setItensPerPage] = useState(8)
+    const [itensPerPage, setItensPerPage] = useState(10)
     const [currentPage, setCurrentPage] = useState(0)
+
+
     const pages = Math.ceil(taskList.length / itensPerPage)
     const startIndex = currentPage * itensPerPage;
     const endIndex = startIndex + itensPerPage;
-
     const currentItens = taskList.slice(startIndex, endIndex)
-  
+
+
 
     useEffect(() => {
-        fetch('/api/taskList/')
-            .then(res => res.json())
-            .then((data) => {
-                localStorage.setItem('taskList', JSON.stringify(data))
-                setTaskList(data)
-                setCurrentPage(0)
-                console.log(data)
-            })
-            .catch(err => console.log(err))
+        http.get('/api/taskList/', (res, req) => {
+            res.json()
+                .then((data) => {
+                    setTaskList(data)
+                    setCurrentPage(0)
+                }).catch(err => console.log(err))
+        })
     }, [update, itensPerPage, createPost])
 
 
@@ -46,15 +50,12 @@ const TodoList = () => {
         tempList.splice(index, 1)
         localStorage.setItem("taskList", JSON.stringify(tempList))
         setTaskList(tempList)
-
-        fetch(`/api/delete/${index}`, {
+        http.delete(`/api/delete/${index}`, {
             method: 'DELETE',
+        }).then(() => {
+            setDel(!del)
+        });
 
-        })
-            .then((res) => res.json())
-            .then((json) => setDel(json));
-
-        setDel(!del)
     }
 
 
@@ -63,38 +64,39 @@ const TodoList = () => {
         tempList[index] = obj
         localStorage.setItem("taskList", JSON.stringify(tempList))
         setTaskList(tempList)
-        fetch(`/api/update/${obj.id}`, {
+        http.patch(`/api/update/${obj.id}`, {
             method: 'PATCH',
             body: JSON.stringify(obj.id),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
-        })
-            .then((res) => res.json())
-            .then((json) => setUpdate(json));
-        setUpdate(!update)
-    }
+        }).then(res => {
+            setUpdate(res.data)
 
+        }).catch(err => console.log(err))
+    }
+    if (!update);
 
     const saveTask = (taskObj) => {
         let tempList = taskList
         tempList.push(taskObj)
-        setCreatePost(taskObj)
+        localStorage.setItem("taskList", JSON.stringify(tempList))
+        setTaskList(taskList)
         setModal(false)
-        fetch('/api/create', {
+        http.post('/api/create', {
             method: "POST",
             body: JSON.stringify(taskObj),
             headers: { "Content-type": "application/json; charset=UTF-8" }
-        }).then(res => res.json())
-            .then((data) => setCreatePost(data))
-            .catch(err => console.log(err))
+        }).then(res => {
+            setCreatePost(res.data)
+
+        }).catch(err => console.log(err))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         navigate("/")
     }
-
 
     const toggle = () => {
         setModal(!modal);

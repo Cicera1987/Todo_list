@@ -1,27 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { createServer, Model, JSONAPISerializer, Response } from "miragejs"
+import { Model, Response, Server } from "miragejs"
 import 'bootstrap/dist/css/bootstrap.css';
 
-createServer({
+new Server({
   models: {
     users: Model,
     tasks: Model,
     create: Model,
     newTask: Model,
-
+    delete: Model,
+    taskList: Model,
 
   },
-  serializers: {
-    application: JSONAPISerializer,
-  },
+
 
   seeds(server) {
     server.db.loadData({
 
       tasks: [
-
+        { id: 1, Name: "teste", Description: "Task Inicial", State: "Pendente" },
       ],
       users: [
         { id: 1, name: "Cica", email: "ccica_25@hotmail.com", password: "123" },
@@ -32,10 +31,13 @@ createServer({
   },
 
   routes() {
-    this.namespace = 'api'
 
-    this.get('/taskList', (schema, request) => {
-      return schema.db.tasks
+    this.namespace = 'api';
+    this.urlPrefix = 'http://todolistdesafio.com.br'
+
+
+    this.get("/taskList", (schema) => {
+      return schema.tasks.all()
     })
 
 
@@ -51,10 +53,8 @@ createServer({
       }
       const newTask = {
         ...attrs,
-        id: Number(newId)
+        id: newId
       }
-  console.log(newTask)
-      console.log(schema.db.tasks)
       return schema.db.tasks.insert(newTask);
     });
 

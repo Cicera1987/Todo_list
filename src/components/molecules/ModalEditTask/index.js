@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, ModalHeader, Button, ModalBody, ModalFooter } from 'reactstrap';
-import { ContainerSelect, TitleLabel, StyleForm } from '../ModalCreatTask/style';
+import { ContainerSelect, TitleLabel} from '../ModalCreatTask/style';
 
 
 const EditTaskPopup = ({ modal, toggle, updateTask, taskObj, value }) => {
@@ -67,7 +67,7 @@ const EditTaskPopup = ({ modal, toggle, updateTask, taskObj, value }) => {
             </ModalBody>
             <ModalFooter>
                 <Button onClick={handleUpdate}>Update</Button>{' '}
-                <Button onClick={toggle}>Cancel</Button>
+                <Button onClick={toggle}>Voltar</Button>
             </ModalFooter>
         </Modal>
     );

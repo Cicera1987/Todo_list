@@ -9,7 +9,6 @@ export const CardHeader = styled.div`
     padding: 0.3em !important;
     text-align: center;
     border-radius:10px;
-    background-color: #ADD8E6;
 `
 
 export const CardContainer = styled.div`
@@ -36,7 +35,6 @@ export const TaskHolder = styled.div`
 `
 
 export const CardTop = styled.div`
-    background-color: #1E90FF;
     padding: 0.2em !important;
     width: 100%;
 `
@@ -60,12 +58,11 @@ export const CardIcon = styled.div`
     
 svg {
     cursor: pointer;
-    font-size: 1rem;
-    color: DodgerBlue;
+    font-size: 1.3rem;
+
 
 }
 `
-
 export const CardSelect = styled.div`
     margin-top: 0.5em;
     margin-bottom: 1.5em;
@@ -74,5 +71,4 @@ export const CardSelect = styled.div`
     padding: 0.3em !important;
     text-align: center;
     border-radius:10px;
-    background-color: #A9A9A9;
 `

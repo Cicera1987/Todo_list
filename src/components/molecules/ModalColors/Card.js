@@ -8,6 +8,33 @@ import { CardHeader, CardWrapper, CardTop, TaskHolder, CardText, CardIcon, CardS
 const Card = ({ taskObj, index, deleteTask, updateListArray }) => {
     const [modal, setModal] = useState(false);
 
+    //forEach de cores
+    const colors = [
+        {
+            primaryColor: "#5D93E1",
+            secondaryColor: "#ECF3FC"
+        },
+        {
+            primaryColor: "#00BFFF",
+            secondaryColor: "#F5FFFA"
+        },
+        {
+            primaryColor: "#5DC250",
+            secondaryColor: "#F2FAF1"
+        },
+        {
+            primaryColor: "#F48687",
+            secondaryColor: "#FDF1F1"
+        },
+        {
+            primaryColor: "#F9D288",
+            secondaryColor: "#FEFAF1"
+        },
+    ]
+
+    const toggleColor = ()=>{
+        return colors[index % colors.length]
+    }
 
     const toggle = () => {
         setModal(!modal);
@@ -28,14 +55,14 @@ useEffect(()=>{
 
     return (
         <CardWrapper>
-            <CardTop></CardTop>
+            <CardTop style={{"backgroundColor": toggleColor().primaryColor }}></CardTop>
             <TaskHolder>
-                <CardHeader>{taskObj.Name}</CardHeader>
-                <CardSelect>{taskObj.State}</CardSelect>
+                <CardHeader style={{ "backgroundColor": toggleColor().secondaryColor }}>{taskObj.Name}</CardHeader>
+                <CardSelect style={{ "backgroundColor": toggleColor().primaryColor }}>{taskObj.State}</CardSelect>
                 <CardText>{taskObj.Description}</CardText>
                 <CardIcon>
-                    <a onClick={() => setModal(true)}><FiEdit /></a>
-                    <a onClick={handleDelete}><RiDeleteBin6Fill /> </a>
+                    <a style={{ "color": toggleColor().primaryColor }} onClick={() => setModal(true)}><FiEdit /></a>
+                    <a style={{ "color": toggleColor().primaryColor }} onClick={handleDelete}><RiDeleteBin6Fill /> </a>
                 </CardIcon>
             </TaskHolder>
             <EditTaskPopup modal={modal} toggle={toggle} updateTask={updateTask} taskObj={taskObj} />

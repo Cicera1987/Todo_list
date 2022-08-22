@@ -14,20 +14,41 @@ const Card = ({ taskObj, index, deleteTask, updateListArray }) => {
             primaryColor: "#5D93E1",
             secondaryColor: "#ECF3FC"
         },
+
         {
-            primaryColor: "#00BFFF",
-            secondaryColor: "#F5FFFA"
+            primaryColor: "#F4A460",
+            secondaryColor: "#FDF1F1"
         },
         {
             primaryColor: "#5DC250",
             secondaryColor: "#F2FAF1"
         },
         {
-            primaryColor: "#F48687",
-            secondaryColor: "#FDF1F1"
+            primaryColor: "#F9D288",
+            secondaryColor: "#FEFAF1"
         },
         {
-            primaryColor: "#F9D288",
+            primaryColor: "#8A2BE2",
+            secondaryColor: "#FFF5EE"
+        },
+        {
+            primaryColor: "#778899",
+            secondaryColor: "#FEFAF1"
+        },
+        {
+            primaryColor: "#B22222",
+            secondaryColor: "#FEFAF1"
+        },
+        {
+            primaryColor: "#00BFFF",
+            secondaryColor: "#F5FFFA"
+        },
+        {
+            primaryColor: "#9d4e15",
+            secondaryColor: "#FEFAF1"
+        },
+        {
+            primaryColor: "#556B2F",
             secondaryColor: "#FEFAF1"
         },
     ]
